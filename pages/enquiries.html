@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Razet Admin | Enquiries</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body class="admin-page">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo-mark">R</div>
+
+            <div>
+                <strong>Razet</strong>
+                <span>Admin</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <a href="../dashboard.html" class="nav-item">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="enquiries.html" class="nav-item active">
+                <span>✉</span>
+                Enquiries
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>◉</span>
+                Leads
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>▥</span>
+                Analytics
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⚙</span>
+                Automations
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+        <button id="logout-button" class="logout-button">
+            Logout
+        </button>
+
+    </aside>
+
+
+    <main class="admin-main">
+
+        <header class="admin-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    RAZET TECHNOLOGIES
+                </p>
+
+                <h1>Enquiries</h1>
+
+                <p>
+                    Manage and track enquiries received from your business.
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- FILTERS -->
+
+        <section class="filters">
+
+            <input
+                type="search"
+                id="search-input"
+                placeholder="Search by name, email or company..."
+            >
+
+            <select id="status-filter">
+
+                <option value="">All Statuses</option>
+                <option value="New">New</option>
+                <option value="Contacted">Contacted</option>
+                <option value="Qualified">Qualified</option>
+                <option value="Proposal">Proposal</option>
+                <option value="Won">Won</option>
+                <option value="Lost">Lost</option>
+
+            </select>
+
+
+            <select id="service-filter">
+
+                <option value="">All Services</option>
+                <option value="Business Automation">
+                    Business Automation
+                </option>
+
+                <option value="AI Solutions">
+                    AI Solutions
+                </option>
+
+                <option value="Web & Digital Platforms">
+                    Web & Digital Platforms
+                </option>
+
+                <option value="Data & Business Intelligence">
+                    Data & Business Intelligence
+                </option>
+
+                <option value="Technology Consulting & Training">
+                    Technology Consulting & Training
+                </option>
+
+            </select>
+
+            <select id="priority-filter">
+                    <option value="">All Priorities</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+
+        </section>
+
+
+        <!-- ENQUIRIES TABLE -->
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>All Enquiries</h2>
+
+                    <p id="result-count">
+                        Loading...
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                               <th>Name</th>
+                                <th>Company</th>
+                                <th>Service</th>
+                                <th>Score</th>
+                                <th>Priority</th>
+                                <th>Qualified</th>
+                                <th>Status</th>
+                                <th>Next Follow-up</th>
+                                <th>Date</th>
+                                <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="enquiries-table">
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="loading"
+                            >
+                                Loading enquiries...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ENQUIRY MODAL -->
+
+    <div
+        id="enquiry-modal"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+            <button
+                id="close-modal"
+                class="modal-close"
+            >
+                ×
+            </button>
+
+            <h2 id="modal-name"></h2>
+
+            <div class="modal-details">
+
+                <p>
+                    <strong>Email:</strong>
+                    <span id="modal-email"></span>
+                </p>
+
+                <p>
+                    <strong>Phone:</strong>
+                    <span id="modal-phone"></span>
+                </p>
+
+                <p>
+                    <strong>Company:</strong>
+                    <span id="modal-company"></span>
+                </p>
+
+                <p>
+                    <strong>Service:</strong>
+                    <span id="modal-service"></span>
+                </p>
+
+                <p>
+                    <strong>Budget:</strong>
+                    <span id="modal-budget"></span>
+                </p>
+
+                <p>
+                    <strong>Source:</strong>
+                    <span id="modal-source"></span>
+                </p>
+
+                <div class="modal-message">
+
+                    <strong>Message</strong>
+
+                    <p id="modal-message"></p>
+
+                </div>
+
+            </div>
+
+        </div>
+                    <div class="lead-management">
+
+                <h3>Lead Management</h3>
+
+                <div class="management-grid">
+
+                    <div class="form-group">
+                        <label for="follow-up-date">
+                            Next Follow-up
+                        </label>
+
+                        <input
+                            type="datetime-local"
+                            id="follow-up-date"
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="deal-value">
+                            Deal Value
+                        </label>
+
+                        <input
+                            type="number"
+                            id="deal-value"
+                            placeholder="0"
+                            min="0"
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="follow-up-notes">
+                        Follow-up Notes
+                    </label>
+
+                    <textarea
+                        id="follow-up-notes"
+                        rows="4"
+                        placeholder="Add notes about this lead or next action..."
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="save-lead-management"
+                    class="primary-button"
+                >
+                    Save Lead Details
+                </button>
+
+                <button type="button" id="close-modal"></button>
+            </div>
+
+    </div>
+
+
+    <script src="../js/supabase.js"></script>
+
+
+    <script>
+
+let enquiries = [];
+
+async function checkAuth() {
+    const { data: { session } } =
+        await supabaseClient.auth.getSession();
+
+    if (!session) {
+        window.location.href = "../index.html";
+        return false;
+    }
+
+    return true;
+}
+
+async function loadEnquiries() {
+
+    const table = document.getElementById("enquiries-table");
+    const resultCount = document.getElementById("result-count");
+
+    try {
+
+        const { data, error } = await supabaseClient
+            .from("enquiries")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            console.error(error);
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="10" class="empty">
+                        Unable to load enquiries.
+                    </td>
+                </tr>
+            `;
+
+            resultCount.textContent = "Unable to load enquiries.";
+            return;
+        }
+
+        enquiries = data || [];
+
+        renderEnquiries();
+
+    } catch (error) {
+
+        console.error(error);
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="10" class="empty">
+                    Unable to load enquiries.
+                </td>
+            </tr>
+        `;
+
+    }
+}
+
+
+function renderEnquiries() {
+
+    const search =
+        document.getElementById("search-input").value
+            .trim()
+            .toLowerCase();
+
+    const status =
+        document.getElementById("status-filter").value;
+
+    const service =
+        document.getElementById("service-filter").value;
+
+    const priority =
+        document.getElementById("priority-filter").value;
+
+
+    const filtered = enquiries.filter(enquiry => {
+
+        const matchesSearch =
+            !search ||
+            String(enquiry.name || "")
+                .toLowerCase()
+                .includes(search) ||
+
+            String(enquiry.email || "")
+                .toLowerCase()
+                .includes(search) ||
+
+            String(enquiry.company || "")
+                .toLowerCase()
+                .includes(search);
+
+
+        const matchesStatus =
+            !status ||
+            enquiry.status === status;
+
+
+        const matchesService =
+            !service ||
+            enquiry.service === service;
+
+
+        const matchesPriority =
+            !priority ||
+            enquiry.lead_priority === priority;
+
+
+        return (
+            matchesSearch &&
+            matchesStatus &&
+            matchesService &&
+            matchesPriority
+        );
+
+    });
+
+
+    document.getElementById("result-count").textContent =
+        `${filtered.length} enquiry(s)`;
+
+
+    const table =
+        document.getElementById("enquiries-table");
+
+
+    if (!filtered.length) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="10" class="empty">
+                    No enquiries found.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    table.innerHTML = filtered.map(item => {
+
+        const date = item.created_at
+            ? new Date(item.created_at)
+                .toLocaleDateString()
+            : "-";
+
+
+        const followUp = item.next_follow_up
+            ? new Date(item.next_follow_up)
+                .toLocaleDateString()
+            : "-";
+
+
+        const priority =
+            item.lead_priority || "Low";
+
+
+        return `
+
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHtml(item.name || "-")}
+                    </strong>
+                </td>
+
+
+                <td>
+                    ${escapeHtml(item.company || "-")}
+                </td>
+
+
+                <td>
+                    ${escapeHtml(item.service || "-")}
+                </td>
+
+
+                <td>
+                    ${item.lead_score ?? 0}
+                </td>
+
+
+                <td>
+
+                    <span class="
+                        priority-badge
+                        priority-${priority.toLowerCase()}
+                    ">
+                        ${escapeHtml(priority)}
+                    </span>
+
+                </td>
+
+
+                <td>
+                    ${item.qualified ? "Yes" : "No"}
+                </td>
+
+
+                <td>
+
+                    <select
+                        class="status-select"
+                        data-id="${item.id}"
+                    >
+
+                        ${statusOptions(item.status)}
+
+                    </select>
+
+                </td>
+
+
+                <td>
+                    ${followUp}
+                </td>
+
+
+                <td>
+                    ${date}
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="view-button"
+                        onclick="viewEnquiry(${item.id})"
+                    >
+                        View
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }).join("");
+
+
+    document
+        .querySelectorAll(".status-select")
+        .forEach(select => {
+
+            select.addEventListener(
+                "change",
+                updateStatus
+            );
+
+        });
+
+}
+
+
+function statusOptions(current) {
+
+    const statuses = [
+        "New",
+        "Contacted",
+        "Qualified",
+        "Proposal",
+        "Won",
+        "Lost"
+    ];
+
+
+    return statuses.map(status => `
+
+        <option
+            value="${status}"
+            ${status === current ? "selected" : ""}
+        >
+            ${status}
+        </option>
+
+    `).join("");
+
+}
+
+
+async function updateStatus(event) {
+
+    const id =
+        event.target.dataset.id;
+
+    const status =
+        event.target.value;
+
+
+    const { error } = await supabaseClient
+        .from("enquiries")
+        .update({
+            status,
+            updated_at:
+                new Date().toISOString()
+        })
+        .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to update enquiry status."
+        );
+
+        return;
+    }
+
+
+    const enquiry =
+        enquiries.find(
+            item =>
+                String(item.id) === String(id)
+        );
+
+
+    if (enquiry) {
+
+        enquiry.status = status;
+
+    }
+
+
+    renderEnquiries();
+
+}
+
+
+let selectedEnquiryId = null;
+
+function viewEnquiry(id) {
+
+    const item = enquiries.find(
+        enquiry =>
+            String(enquiry.id) === String(id)
+    );
+
+    if (!item) return;
+
+    selectedEnquiryId = id;
+
+    document.getElementById("modal-name").textContent =
+        item.name || "-";
+
+    document.getElementById("modal-email").textContent =
+        item.email || "-";
+
+    document.getElementById("modal-phone").textContent =
+        item.phone || "-";
+
+    document.getElementById("modal-company").textContent =
+        item.company || "-";
+
+    document.getElementById("modal-service").textContent =
+        item.service || "-";
+
+    document.getElementById("modal-budget").textContent =
+        item.budget || "-";
+
+    document.getElementById("modal-source").textContent =
+        item.source || "-";
+
+    document.getElementById("modal-message").textContent =
+        item.message || "-";
+
+
+    /*
+     * Load lead management data
+     */
+
+    if (item.next_follow_up) {
+
+        const date = new Date(item.next_follow_up);
+
+        const localDate =
+            new Date(
+                date.getTime() -
+                date.getTimezoneOffset() * 60000
+            )
+            .toISOString()
+            .slice(0, 16);
+
+        document.getElementById(
+            "follow-up-date"
+        ).value = localDate;
+
+    } else {
+
+        document.getElementById(
+            "follow-up-date"
+        ).value = "";
+
+    }
+
+
+    document.getElementById(
+        "deal-value"
+    ).value = item.deal_value || "";
+
+
+    document.getElementById(
+        "follow-up-notes"
+    ).value = item.follow_up_notes || "";
+
+
+    document.getElementById(
+        "enquiry-modal"
+    ).classList.add("active");
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+document
+    .getElementById("save-lead-management")
+    .addEventListener("click", async () => {
+
+        if (!selectedEnquiryId) return;
+
+        const followUpDate =
+            document.getElementById(
+                "follow-up-date"
+            ).value;
+
+        const dealValue =
+            document.getElementById(
+                "deal-value"
+            ).value;
+
+        const followUpNotes =
+            document.getElementById(
+                "follow-up-notes"
+            ).value.trim();
+
+
+        const updateData = {
+
+            next_follow_up:
+                followUpDate
+                    ? new Date(
+                        followUpDate
+                    ).toISOString()
+                    : null,
+
+            deal_value:
+                dealValue
+                    ? Number(dealValue)
+                    : 0,
+
+            follow_up_notes:
+                followUpNotes || null,
+
+            updated_at:
+                new Date().toISOString()
+
+        };
+
+     const enquiryModal = document.getElementById("enquiry-modal");
+const closeModalButton = document.getElementById("close-modal");
+
+function closeEnquiryModal() {
+    enquiryModal.classList.remove("active");
+    selectedEnquiryId = null;
+}
+
+closeModalButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    closeEnquiryModal();
+});
+
+enquiryModal.addEventListener("click", function (event) {
+    if (event.target === enquiryModal) {
+        closeEnquiryModal();
+    }
+});
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        closeEnquiryModal();
+    }
+});
+
+
+        const { error } =
+            await supabaseClient
+                .from("enquiries")
+                .update(updateData)
+                .eq("id", selectedEnquiryId);
+
+
+        if (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to save lead details."
+            );
+
+            return;
+        }
+
+
+        const enquiry =
+            enquiries.find(
+                item =>
+                    String(item.id) ===
+                    String(selectedEnquiryId)
+            );
+
+
+        if (enquiry) {
+
+            Object.assign(
+                enquiry,
+                updateData
+            );
+
+        }
+
+
+        alert(
+            "Lead details saved successfully."
+        );
+
+
+        renderEnquiries();
+
+    });
+
+(async function init() {
+
+    const authenticated =
+        await checkAuth();
+
+    if (!authenticated) return;
+
+    await loadEnquiries();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>

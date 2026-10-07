@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Razet Admin | Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body class="admin-page">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo-mark">R</div>
+            <div>
+                <strong>Razet</strong>
+                <span>Admin</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <a href="#" class="nav-item active">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="pages/enquiries.html" class="nav-item">
+                <span>✉</span>
+                Enquiries
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>◉</span>
+                Leads
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>▥</span>
+                Analytics
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⚙</span>
+                Automations
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+        <button id="logout-button" class="logout-button">
+            Logout
+        </button>
+
+    </aside>
+
+
+    <main class="admin-main">
+
+        <header class="admin-header">
+
+            <div>
+                <p class="eyebrow">RAZET TECHNOLOGIES</p>
+                <h1>Dashboard</h1>
+                <p>Welcome back. Here's what's happening with your business.</p>
+            </div>
+
+            <div class="admin-user">
+                Admin
+            </div>
+
+        </header>
+
+
+        <section class="stats-grid">
+
+                    <div class="stat-card">
+                        <span class="stat-label">Total Enquiries</span>
+                        <strong id="total-enquiries">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">New</span>
+                        <strong id="new-enquiries">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Qualified</span>
+                        <strong id="qualified-leads">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Proposals</span>
+                        <strong id="proposal-leads">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Won</span>
+                        <strong id="won-leads">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Lost</span>
+                        <strong id="lost-leads">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">High Priority</span>
+                        <strong id="high-priority">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Follow-ups Due</span>
+                        <strong id="follow-ups-due">0</strong>
+                    </div>
+
+                    <div class="analytics-stats">
+
+                        <div class="stat-card">
+                            <span class="stat-label">Conversion Rate</span>
+                            <strong id="conversion-rate">0%</strong>
+                        </div>
+
+                        <div class="stat-card">
+                            <span class="stat-label">Won Revenue</span>
+                            <strong id="won-revenue">$0</strong>
+                        </div>
+
+                        <div class="stat-card">
+                            <span class="stat-label">Pipeline Value</span>
+                            <strong id="pipeline-value">$0</strong>
+                        </div>
+
+                        <div class="stat-card">
+                            <span class="stat-label">Average Lead Score</span>
+                            <strong id="average-score">0</strong>
+                        </div>
+
+                    </div>
+
+        </section>
+
+        <section class="analytics-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Business Analytics</h2>
+            <p>Overview of enquiries, leads, services and sales performance.</p>
+        </div>
+    </div>
+
+
+    <div class="analytics-grid">
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-header">
+                <h3>Enquiries Trend</h3>
+                <span>Last 12 months</span>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="enquiries-chart"></canvas>
+            </div>
+
+        </div>
+
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-header">
+                <h3>Sales Pipeline</h3>
+                <span>Current leads</span>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="pipeline-chart"></canvas>
+            </div>
+
+        </div>
+
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-header">
+                <h3>Enquiries by Service</h3>
+                <span>Demand distribution</span>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="service-chart"></canvas>
+            </div>
+
+        </div>
+
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-header">
+                <h3>Revenue by Stage</h3>
+                <span>Deal values</span>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="revenue-chart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Recent Enquiries</h2>
+                    <p>Latest enquiries received through the website.</p>
+                </div>
+
+                <a href="pages/enquiries.html" class="view-all">
+                    View All
+                </a>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="enquiries-table">
+
+                        <tr>
+                            <td colspan="5" class="loading">
+                                Loading enquiries...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+
+let enquiries = [];
+
+let enquiriesChart = null;
+let pipelineChart = null;
+let serviceChart = null;
+let revenueChart = null;
+
+
+async function checkAuth() {
+
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+        window.location.href = "index.html";
+        return false;
+    }
+
+    return true;
+}
+
+
+async function loadDashboard() {
+
+    const table =
+        document.getElementById("enquiries-table");
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+                .from("enquiries")
+                .select("*")
+                .order("created_at", {
+                    ascending: false
+                });
+
+
+        if (error) {
+
+            console.error(
+                "Dashboard error:",
+                error
+            );
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        Unable to load enquiries.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        enquiries = data || [];
+
+        updateStatistics(enquiries);
+
+        updateAnalytics(enquiries);
+
+        renderRecentEnquiries(enquiries);
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected dashboard error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ================================
+   STATISTICS
+================================ */
+
+function updateStatistics(data) {
+
+    const now = new Date();
+
+
+    const total =
+        data.length;
+
+
+    const newLeads =
+        data.filter(
+            item => item.status === "New"
+        ).length;
+
+
+    const qualified =
+        data.filter(
+            item => item.qualified === true
+        ).length;
+
+
+    const proposals =
+        data.filter(
+            item => item.status === "Proposal"
+        ).length;
+
+
+    const won =
+        data.filter(
+            item => item.status === "Won"
+        ).length;
+
+
+    const lost =
+        data.filter(
+            item => item.status === "Lost"
+        ).length;
+
+
+    const highPriority =
+        data.filter(
+            item => item.lead_priority === "High"
+        ).length;
+
+
+    const followUpsDue =
+        data.filter(item => {
+
+            if (!item.next_follow_up) {
+                return false;
+            }
+
+            if (
+                item.status === "Won" ||
+                item.status === "Lost"
+            ) {
+                return false;
+            }
+
+            return (
+                new Date(item.next_follow_up) <= now
+            );
+
+        }).length;
+
+
+    const wonRevenue =
+        data
+            .filter(
+                item => item.status === "Won"
+            )
+            .reduce(
+                (total, item) =>
+                    total +
+                    Number(item.deal_value || 0),
+                0
+            );
+
+
+    const pipelineValue =
+        data
+            .filter(item =>
+                [
+                    "Qualified",
+                    "Proposal"
+                ].includes(item.status)
+            )
+            .reduce(
+                (total, item) =>
+                    total +
+                    Number(item.deal_value || 0),
+                0
+            );
+
+
+    const averageScore =
+        total > 0
+            ? Math.round(
+                data.reduce(
+                    (sum, item) =>
+                        sum +
+                        Number(
+                            item.lead_score || 0
+                        ),
+                    0
+                ) / total
+            )
+            : 0;
+
+
+    const conversionRate =
+        total > 0
+            ? ((won / total) * 100).toFixed(1)
+            : 0;
+
+
+    setText(
+        "total-enquiries",
+        total
+    );
+
+    setText(
+        "new-enquiries",
+        newLeads
+    );
+
+    setText(
+        "qualified-leads",
+        qualified
+    );
+
+    setText(
+        "proposal-leads",
+        proposals
+    );
+
+    setText(
+        "won-leads",
+        won
+    );
+
+    setText(
+        "lost-leads",
+        lost
+    );
+
+    setText(
+        "high-priority",
+        highPriority
+    );
+
+    setText(
+        "follow-ups-due",
+        followUpsDue
+    );
+
+
+    setText(
+        "conversion-rate",
+        `${conversionRate}%`
+    );
+
+
+    setText(
+        "won-revenue",
+        formatCurrency(
+            wonRevenue
+        )
+    );
+
+
+    setText(
+        "pipeline-value",
+        formatCurrency(
+            pipelineValue
+        )
+    );
+
+
+    setText(
+        "average-score",
+        averageScore
+    );
+
+}
+
+
+/* ================================
+   ANALYTICS
+================================ */
+
+function updateAnalytics(data) {
+
+    createEnquiriesChart(data);
+
+    createPipelineChart(data);
+
+    createServiceChart(data);
+
+    createRevenueChart(data);
+
+}
+
+
+/* ================================
+   MONTHLY ENQUIRIES
+================================ */
+
+function createEnquiriesChart(data) {
+
+    const months = [];
+
+    const counts = [];
+
+
+    for (
+        let i = 11;
+        i >= 0;
+        i--
+    ) {
+
+        const date = new Date();
+
+        date.setMonth(
+            date.getMonth() - i
+        );
+
+        const year =
+            date.getFullYear();
+
+        const month =
+            date.getMonth();
+
+
+        months.push(
+            date.toLocaleDateString(
+                "en-US",
+                {
+                    month: "short"
+                }
+            )
+        );
+
+
+        counts.push(
+            data.filter(item => {
+
+                if (!item.created_at) {
+                    return false;
+                }
+
+                const created =
+                    new Date(
+                        item.created_at
+                    );
+
+                return (
+                    created.getFullYear() === year &&
+                    created.getMonth() === month
+                );
+
+            }).length
+        );
+
+    }
+
+
+    if (enquiriesChart) {
+        enquiriesChart.destroy();
+    }
+
+
+    enquiriesChart =
+        new Chart(
+            document.getElementById(
+                "enquiries-chart"
+            ),
+            {
+                type: "line",
+
+                data: {
+
+                    labels: months,
+
+                    datasets: [
+                        {
+                            label: "Enquiries",
+                            data: counts,
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+
+                    scales: {
+
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
+
+
+/* ================================
+   PIPELINE
+================================ */
+
+function createPipelineChart(data) {
+
+    const statuses = [
+        "New",
+        "Contacted",
+        "Qualified",
+        "Proposal",
+        "Won",
+        "Lost"
+    ];
+
+
+    const values =
+        statuses.map(
+            status =>
+                data.filter(
+                    item =>
+                        item.status === status
+                ).length
+        );
+
+
+    if (pipelineChart) {
+        pipelineChart.destroy();
+    }
+
+
+    pipelineChart =
+        new Chart(
+            document.getElementById(
+                "pipeline-chart"
+            ),
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: statuses,
+
+                    datasets: [
+                        {
+                            label: "Leads",
+                            data: values
+                        }
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+
+                    scales: {
+
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
+
+
+/* ================================
+   SERVICES
+================================ */
+
+function createServiceChart(data) {
+
+    const services = {};
+
+
+    data.forEach(item => {
+
+        const service =
+            item.service ||
+            "Unspecified";
+
+        services[service] =
+            (services[service] || 0) + 1;
+
+    });
+
+
+    const labels =
+        Object.keys(services);
+
+
+    const values =
+        Object.values(services);
+
+
+    if (serviceChart) {
+        serviceChart.destroy();
+    }
+
+
+    serviceChart =
+        new Chart(
+            document.getElementById(
+                "service-chart"
+            ),
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels,
+
+                    datasets: [
+                        {
+                            label: "Enquiries",
+                            data: values
+                        }
+                    ]
+
+                },
+
+                options: {
+
+                    indexAxis: "y",
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+
+                    scales: {
+
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
+
+
+/* ================================
+   REVENUE
+================================ */
+
+function createRevenueChart(data) {
+
+    const statuses = [
+        "Qualified",
+        "Proposal",
+        "Won",
+        "Lost"
+    ];
+
+
+    const values =
+        statuses.map(
+            status =>
+                data
+                    .filter(
+                        item =>
+                            item.status === status
+                    )
+                    .reduce(
+                        (sum, item) =>
+                            sum +
+                            Number(
+                                item.deal_value || 0
+                            ),
+                        0
+                    )
+        );
+
+
+    if (revenueChart) {
+        revenueChart.destroy();
+    }
+
+
+    revenueChart =
+        new Chart(
+            document.getElementById(
+                "revenue-chart"
+            ),
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: statuses,
+
+                    datasets: [
+                        {
+                            label: "Deal Value",
+                            data: values
+                        }
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+
+                                callback:
+                                    function(value) {
+
+                                        return "$" +
+                                            Number(value)
+                                                .toLocaleString();
+
+                                    }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
+
+
+/* ================================
+   RECENT ENQUIRIES
+================================ */
+
+function renderRecentEnquiries(data) {
+
+    const table =
+        document.getElementById(
+            "enquiries-table"
+        );
+
+
+    if (!data.length) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">
+                    No enquiries yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    table.innerHTML =
+        data
+            .slice(0, 10)
+            .map(item => {
+
+                const date =
+                    item.created_at
+                        ? new Date(
+                            item.created_at
+                        ).toLocaleDateString()
+                        : "-";
+
+
+                const status =
+                    item.status || "New";
+
+
+                return `
+                    <tr>
+
+                        <td>
+                            ${escapeHtml(
+                                item.name || "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                item.company || "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                item.service || "-"
+                            )}
+                        </td>
+
+                        <td>
+                            <span class="status ${status.toLowerCase()}">
+                                ${escapeHtml(status)}
+                            </span>
+                        </td>
+
+                        <td>
+                            ${date}
+                        </td>
+
+                    </tr>
+                `;
+
+            })
+            .join("");
+
+}
+
+
+/* ================================
+   HELPERS
+================================ */
+
+function setText(id, value) {
+
+    const element =
+        document.getElementById(id);
+
+    if (element) {
+        element.textContent = value;
+    }
+
+}
+
+
+function formatCurrency(value) {
+
+    return "$" +
+        Number(value || 0)
+            .toLocaleString(
+                "en-US",
+                {
+                    maximumFractionDigits: 2
+                }
+            );
+
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ================================
+   LOGOUT
+================================ */
+
+document
+    .getElementById("logout-button")
+    .addEventListener(
+        "click",
+        async () => {
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+
+/* ================================
+   INITIALIZE
+================================ */
+
+(async function init() {
+
+    const authenticated =
+        await checkAuth();
+
+    if (!authenticated) {
+        return;
+    }
+
+    await loadDashboard();
+
+})();
+
+</script>
+
+</body>
+
+</html>
